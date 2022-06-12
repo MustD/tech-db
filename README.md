@@ -6,7 +6,7 @@ Early development state. Inspect code. No additional documentation yet.
 
 run steps
 * `docker compose up`
-* create hasura entities (no migrations yet, check code base)
+* create hasura entities (no migrations yet, check code base, there is raw db dump in `./migrations`)
 * `yarn generate`
 * `yarn start` 
 
