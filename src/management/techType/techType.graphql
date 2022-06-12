@@ -25,3 +25,9 @@ mutation updateTechType ($id: tech_type_pk_columns_input!, $techTypeData: tech_t
         name
     }
 }
+
+mutation deleteTechTypeById ($id: bigint!) {
+    delete_tech_type_by_pk(id: $id) {
+        id
+    }
+}
