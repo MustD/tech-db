@@ -4,6 +4,13 @@ Project need to create developer tech database
 
 Early development state. Inspect code. No additional documentation yet.
 
+run steps
+* `docker compose up`
+* create hasura entities (no migrations yet, check code base)
+* `yarn generate`
+* `yarn start` 
+
+additional libs
 + material ui
 + idea graphql plugin
 + apollo graphql codegen
