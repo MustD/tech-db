@@ -24,12 +24,12 @@ export const TechTagEdit = () => {
     }
   }, [oldData?.tech_tag_by_pk])
 
-  const [saveTechType, {error: saveError, data: saveData}] = useUpdateTechTagByIdMutation({
+  const [saveTechTag, {error: saveError, data: saveData}] = useUpdateTechTagByIdMutation({
     variables: {id: id, techTag: {name: name}},
     refetchQueries: [GetTechTagListDocument]
   })
 
-  const [deleteTechType, {error: deleteError, data: deleteData}] = useDeleteTechTagByIdMutation({
+  const [deleteTechTag, {error: deleteError, data: deleteData}] = useDeleteTechTagByIdMutation({
     variables: {id: id},
     refetchQueries: [GetTechTagListDocument]
   })
@@ -43,11 +43,11 @@ export const TechTagEdit = () => {
       <Stack direction="row" alignItems="center" spacing={1}>
         {deleteData?.delete_tech_tag_by_pk ?
           <Button onClick={() => navigate(-1)}>deleted, go back</Button> :
-          <Button disabled={!!saveData?.update_tech_tag_by_pk} color={"warning"} onClick={() => deleteTechType()}>delete</Button>
+          <Button disabled={!!saveData?.update_tech_tag_by_pk} color={"warning"} onClick={() => deleteTechTag()}>delete</Button>
         }
         {saveData?.update_tech_tag_by_pk ?
           <Button onClick={() => navigate(-1)}>Saved, go back</Button> :
-          <Button disabled={!!deleteData?.delete_tech_tag_by_pk} onClick={() => saveTechType()}>save</Button>
+          <Button disabled={!!deleteData?.delete_tech_tag_by_pk} onClick={() => saveTechTag()}>save</Button>
         }
       </Stack>
     </Stack>

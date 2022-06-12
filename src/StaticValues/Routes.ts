@@ -5,5 +5,7 @@ export const Routes = {
     techTypeEdit: "edit",
     techTag: "tech-tag",
     techTagEdit: "edit",
+    tagGroup: "tag-group",
+    tagGroupEdit: "edit",
   }
 }

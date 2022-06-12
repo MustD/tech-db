@@ -1,3 +1,3 @@
-export * from "./techTagList"
-export * from "./techTagCreate"
-export * from "./techTagEdit"
+export * from "./TechTagList"
+export * from "./TechTagCreate"
+export * from "./TechTagEdit"

@@ -4,6 +4,7 @@ import {Landing} from "./public/landing";
 import {ManagementLanding} from "./management/landing";
 import {TechTypeCreate, TechTypeEdit, TechTypeList} from "./management/techType";
 import {TechTagCreate, TechTagEdit, TechTagList} from "./management/techTag";
+import {TagGroupCreate, TagGroupEdit, TagGroupList} from "./management/tagGroup";
 
 export const AppRouter = () => {
   return (
@@ -27,6 +28,14 @@ export const AppRouter = () => {
               <Route path={RouteNames.management.techTagEdit}>
                 <Route index element={<TechTagCreate/>}/>
                 <Route path=":techTagId" element={<TechTagEdit/>}/>
+              </Route>
+            </Route>
+
+            <Route path={RouteNames.management.tagGroup}>
+              <Route index element={<TagGroupList/>}/>
+              <Route path={RouteNames.management.tagGroupEdit}>
+                <Route index element={<TagGroupCreate/>}/>
+                <Route path=":tagGroupId" element={<TagGroupEdit/>}/>
               </Route>
             </Route>
 
