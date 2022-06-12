@@ -30,7 +30,8 @@ export const TechTypeEdit = () => {
   })
 
   const [deleteTechType, {error: deleteError, data: deleteData}] = useDeleteTechTypeByIdMutation({
-    variables: {id: id}
+    variables: {id: id},
+    refetchQueries: [GetTechTypeListDocument]
   })
 
   return (
@@ -42,7 +43,7 @@ export const TechTypeEdit = () => {
       <Stack direction="row" alignItems="center" spacing={1}>
         {deleteData?.delete_tech_type_by_pk ?
           <Button onClick={() => navigate(-1)}>deleted, go back</Button> :
-          <Button color={"warning"} onClick={() => deleteTechType()}>delete</Button>
+          <Button disabled={!!saveData?.update_tech_type_by_pk} color={"warning"} onClick={() => deleteTechType()}>delete</Button>
         }
         {saveData?.update_tech_type_by_pk ?
           <Button onClick={() => navigate(-1)}>Saved, go back</Button> :

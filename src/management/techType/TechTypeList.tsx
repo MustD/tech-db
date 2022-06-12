@@ -1,7 +1,6 @@
 import {
   IconButton,
   Paper,
-  Stack,
   Table,
   TableBody,
   TableCell,
@@ -9,12 +8,11 @@ import {
   TableHead,
   TableRow
 } from "@mui/material";
-import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
 import {Link} from "react-router-dom";
 import {Routes} from "../../StaticValues/Routes";
-import {useDeleteTechTypeByIdMutation, useGetTechTypeListQuery} from "../../generated/graphql/generated";
+import {useGetTechTypeListQuery} from "../../generated/graphql/generated";
 
 export const TechTypeList = () => {
   const {data} = useGetTechTypeListQuery()
@@ -35,7 +33,7 @@ export const TechTypeList = () => {
               <TableCell> {item.id} </TableCell>
               <TableCell>{item.name}</TableCell>
               <TableCell>
-                  <Link to={`${Routes.management.techTypeEdit}/${item.id}`}><IconButton><EditIcon/> </IconButton></Link>
+                <Link to={`${Routes.management.techTypeEdit}/${item.id}`}><IconButton><EditIcon/> </IconButton></Link>
               </TableCell>
             </TableRow>
           )}
@@ -43,7 +41,7 @@ export const TechTypeList = () => {
             <TableCell/>
             <TableCell/>
             <TableCell>
-                <Link to={`${Routes.management.techTypeEdit}`}><IconButton><AddIcon/> </IconButton></Link>
+              <Link to={`${Routes.management.techTypeEdit}`}><IconButton><AddIcon/> </IconButton></Link>
             </TableCell>
           </TableRow>
         </TableBody>
