@@ -25,7 +25,7 @@ export const TechTypeEdit = () => {
   }, [oldData?.tech_type_by_pk])
 
   const [saveTechType, {error: saveError, data: saveData}] = useUpdateTechTypeMutation({
-    variables: {id: {id: id}, techTypeData: {name: name}},
+    variables: {id: id, techTypeData: {name: name}},
     refetchQueries: [GetTechTypeListDocument]
   })
 
@@ -43,7 +43,8 @@ export const TechTypeEdit = () => {
       <Stack direction="row" alignItems="center" spacing={1}>
         {deleteData?.delete_tech_type_by_pk ?
           <Button onClick={() => navigate(-1)}>deleted, go back</Button> :
-          <Button disabled={!!saveData?.update_tech_type_by_pk} color={"warning"} onClick={() => deleteTechType()}>delete</Button>
+          <Button disabled={!!saveData?.update_tech_type_by_pk} color={"warning"}
+                  onClick={() => deleteTechType()}>delete</Button>
         }
         {saveData?.update_tech_type_by_pk ?
           <Button onClick={() => navigate(-1)}>Saved, go back</Button> :

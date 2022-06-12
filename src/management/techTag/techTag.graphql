@@ -1,0 +1,33 @@
+query getTechTagList {
+    tech_tag(order_by: {id: asc}) {
+        id
+        name
+    }
+}
+
+query getTechTagByID ($id: bigint!)  {
+    tech_tag_by_pk(id: $id) {
+        id
+        name
+    }
+}
+
+mutation saveTechTag ($techTag: tech_tag_insert_input!) {
+    insert_tech_tag_one(object: $techTag) {
+        id
+        name
+    }
+}
+
+mutation updateTechTagById ($id: bigint!, $techTag: tech_tag_set_input!) {
+    update_tech_tag_by_pk(pk_columns: {id: $id}, _set: $techTag ) {
+        id
+    }
+}
+
+mutation deleteTechTagById ($id: bigint!) {
+    delete_tech_tag_by_pk(id: $id) {
+        id
+    }
+}
+

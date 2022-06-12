@@ -3,5 +3,7 @@ export const Routes = {
     index: "management",
     techType: "tech-type",
     techTypeEdit: "edit",
+    techTag: "tech-tag",
+    techTagEdit: "edit",
   }
 }

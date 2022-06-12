@@ -6,6 +6,7 @@ export const ManagementLanding = () => {
     <div>
       <nav>
         <Link to={Routes.management.techType}>tech-type</Link>
+        <Link to={Routes.management.techTag}>tech-tag</Link>
       </nav>
     </div>
 

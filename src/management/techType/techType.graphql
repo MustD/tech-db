@@ -19,10 +19,9 @@ mutation saveTechType ($techType: tech_type_insert_input!) {
     }
 }
 
-mutation updateTechType ($id: tech_type_pk_columns_input!, $techTypeData: tech_type_set_input!) {
-    update_tech_type_by_pk(pk_columns: $id, _set: $techTypeData) {
+mutation updateTechType ($id: bigint!, $techTypeData: tech_type_set_input!) {
+    update_tech_type_by_pk(pk_columns: {id: $id}, _set: $techTypeData) {
         id
-        name
     }
 }
 
