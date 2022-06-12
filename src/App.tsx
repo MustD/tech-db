@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 
 import {ApolloClient, ApolloProvider, InMemoryCache, HttpLink, NormalizedCacheObject} from '@apollo/client';
-import TechTypeList from "./management/techType/TechTypeList";
+import {AppRouter} from "./AppRouter";
 
 const createApolloClient = () => {
   return new ApolloClient({
@@ -16,7 +16,7 @@ function App() {
   const [client] = useState(createApolloClient())
   return (
     <ApolloProvider client={client}>
-      <TechTypeList/>
+      <AppRouter/>
     </ApolloProvider>
   );
 }
