@@ -1,4 +1,3 @@
-import {useQuery} from "@apollo/client";
 import {
   IconButton,
   Paper,
@@ -13,12 +12,12 @@ import {
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
-import {GET_TECH_TYPE_LIST, TechType, TechTypeInventoryData} from "./api";
 import {Link} from "react-router-dom";
 import {Routes} from "../../StaticValues/Routes";
+import {useGetTechTypeListQuery} from "../../generated/graphql/generated";
 
 export const TechTypeList = () => {
-  const {loading, data} = useQuery<TechTypeInventoryData, TechType>(GET_TECH_TYPE_LIST)
+  const {data} = useGetTechTypeListQuery()
 
   return (
     <TableContainer component={Paper}>

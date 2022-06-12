@@ -1,19 +1,15 @@
 import {Button, Stack, TextField, Typography} from "@mui/material";
 import {useState} from "react";
-import {useMutation} from "@apollo/client";
-import {GET_TECH_TYPE_LIST, TechTypeData, SAVE_TECH_TYPE, TechType, updateTechListCache} from "./api";
 import {useNavigate} from "react-router-dom";
+import {useSaveTechTypeMutation} from "../../generated/graphql/generated";
 
 export const TechTypeCreate = () => {
   const navigate = useNavigate()
   const [name, setName] = useState("")
 
-  const [saveTechType, {error, data}] = useMutation<{ insert_tech_type_one: TechType }, { techType: TechTypeData }>(
-    SAVE_TECH_TYPE,
-    {
-      variables: {techType: {name: name}},
-      refetchQueries: [GET_TECH_TYPE_LIST]
-    })
+  const [saveTechType, {error, data}] = useSaveTechTypeMutation({
+    variables: {techType: {name: name}}
+  })
 
   return (
     <Stack direction={"column"} justifyContent={"flex-start"} alignItems={"flex-start"} spacing={1}>

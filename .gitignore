@@ -52,3 +52,5 @@ yarn-debug.log*
 yarn-error.log*
 
 db-data/
+/src/generated/
+schema.graphql

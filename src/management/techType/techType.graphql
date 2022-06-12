@@ -1,0 +1,27 @@
+query getTechTypeList {
+    tech_type (order_by: {id: asc}) {
+        id
+        name
+    }
+}
+
+query getTechTypeById ($id: bigint!) {
+    tech_type_by_pk(id: $id) {
+        id
+        name
+    }
+}
+
+mutation saveTechType ($techType: tech_type_insert_input!) {
+    insert_tech_type_one(object: $techType) {
+        id
+        name
+    }
+}
+
+mutation updateTechType ($id: tech_type_pk_columns_input!, $techTypeData: tech_type_set_input!) {
+    update_tech_type_by_pk(pk_columns: $id, _set: $techTypeData) {
+        id
+        name
+    }
+}
