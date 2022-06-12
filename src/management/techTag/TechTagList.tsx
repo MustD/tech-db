@@ -1,6 +1,8 @@
 import {
+  Chip,
   IconButton,
   Paper,
+  Stack,
   Table,
   TableBody,
   TableCell,
@@ -17,6 +19,7 @@ import {useGetTechTagListQuery} from "../../generated/graphql/generated";
 export const TechTagList = () => {
   const {data} = useGetTechTagListQuery()
 
+
   return (
     <TableContainer component={Paper}>
       <Table size="small">
@@ -24,20 +27,29 @@ export const TechTagList = () => {
           <TableRow>
             <TableCell>Id</TableCell>
             <TableCell>Name</TableCell>
+            <TableCell>Groups</TableCell>
             <TableCell>Actions</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {data && data.tech_tag.map((item) =>
-            <TableRow key={item.id}>
-              <TableCell> {item.id} </TableCell>
-              <TableCell>{item.name}</TableCell>
+          {data && data.tech_tag.map((tag) =>
+            <TableRow key={tag.id}>
+              <TableCell> {tag.id} </TableCell>
+              <TableCell>{tag.name}</TableCell>
               <TableCell>
-                <Link to={`${Routes.management.techTagEdit}/${item.id}`}><IconButton><EditIcon/> </IconButton></Link>
+                <Stack direction="row" spacing={1}>
+                  {tag.tag2groups.map((group) =>
+                    <Chip key={group.tag_group.id} label={group.tag_group.name}/>
+                  )}
+                </Stack>
+              </TableCell>
+              <TableCell>
+                <Link to={`${Routes.management.techTagEdit}/${tag.id}`}><IconButton><EditIcon/> </IconButton></Link>
               </TableCell>
             </TableRow>
           )}
           <TableRow>
+            <TableCell/>
             <TableCell/>
             <TableCell/>
             <TableCell>

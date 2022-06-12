@@ -2,6 +2,13 @@ query getTechTagList {
     tech_tag(order_by: {id: asc}) {
         id
         name
+        tag2groups {
+            id
+            tag_group {
+                id
+                name
+            }
+        }
     }
 }
 
@@ -9,6 +16,13 @@ query getTechTagByID ($id: bigint!)  {
     tech_tag_by_pk(id: $id) {
         id
         name
+        tag2groups {
+            id
+            tag_group {
+                id
+                name
+            }
+        }
     }
 }
 
@@ -28,6 +42,20 @@ mutation updateTechTagById ($id: bigint!, $techTag: tech_tag_set_input!) {
 mutation deleteTechTagById ($id: bigint!) {
     delete_tech_tag_by_pk(id: $id) {
         id
+    }
+}
+
+mutation insertTech2Tag($objects: [group2tag_insert_input!]!) {
+    insert_group2tag(objects: $objects) {
+        returning {
+            id
+        }
+    }
+}
+
+mutation deleteTech2TagById($_in: [bigint!]) {
+    delete_group2tag(where: {id: {_in: $_in}}) {
+        affected_rows
     }
 }
 
