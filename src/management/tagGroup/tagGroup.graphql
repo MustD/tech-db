@@ -12,7 +12,7 @@ query getTagGroupByID ($id: bigint!)  {
     }
 }
 
-mutation saveTagGroup ($tagGroup: tag_group_insert_input!) {
+mutation insertTagGroup ($tagGroup: tag_group_insert_input!) {
     insert_tag_group_one(object: $tagGroup) {
         id
         name

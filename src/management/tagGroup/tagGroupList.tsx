@@ -6,7 +6,7 @@ import {Routes} from "../../StaticValues/Routes";
 import {useGetTagGroupListQuery} from "../../generated/graphql/generated";
 
 export const TagGroupList = () => {
-  const {data} = useGetTagGroupListQuery()
+  const {data} = useGetTagGroupListQuery({fetchPolicy: "no-cache"})
 
   return (
     <TableContainer component={Paper}>

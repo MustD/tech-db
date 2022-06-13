@@ -1,5 +1,5 @@
 import {FormControl, InputLabel, MenuItem, Select} from "@mui/material";
-import {Tech_Type, useGetTechTypeListQuery} from "../../../generated/graphql/generated";
+import {useGetTechTypeListQuery} from "../../../generated/graphql/generated";
 
 export const TechEditType = (
   {

@@ -1,7 +1,9 @@
 import {
-  Button, Chip,
+  Button,
+  Chip,
   IconButton,
-  Paper, Stack,
+  Paper,
+  Stack,
   Table,
   TableBody,
   TableCell,
@@ -16,9 +18,7 @@ import {Routes} from "../../StaticValues/Routes";
 import {useGetTechListQuery} from "../../generated/graphql/generated";
 
 export const TechList = () => {
-  const {data} = useGetTechListQuery({
-    fetchPolicy: "no-cache"
-  })
+  const {data} = useGetTechListQuery({fetchPolicy: "no-cache"})
 
   return (
     <TableContainer component={Paper}>

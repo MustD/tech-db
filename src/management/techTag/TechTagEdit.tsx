@@ -1,16 +1,16 @@
 import {useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
-import {Button, Chip, Stack, TextField, Typography} from "@mui/material";
+import {Button, Stack, TextField, Typography} from "@mui/material";
 import {
-  GetTechTagListDocument,
   useDeleteGroup2TagByIdsMutation,
   useDeleteTechTagByIdMutation,
-  useGetTagGroupListQuery,
   useGetTechTagByIdQuery,
   useInsertGroup2TagMutation,
   useUpdateTechTagByIdMutation
 } from "../../generated/graphql/generated";
-import {addNewGroup, tech2group, toggleExistedGroup} from "./techTagService";
+import {entity2relative, toggleRelation} from "../utils/many2many";
+import {TechTagEditGroups} from "./components";
+import {ApolloErrorMessage} from "../components";
 
 export const TechTagEdit = () => {
   const navigate = useNavigate()
@@ -18,31 +18,22 @@ export const TechTagEdit = () => {
   const id = Number(techTagId) || 0
 
   const [name, setName] = useState("")
-  const [selectedGroups, setSelectedGroups] = useState<tech2group[]>([])
+  const [selectedGroups, setSelectedGroups] = useState<entity2relative[]>([])
 
-  const toggleGroup = (groupId: number) => {
-    const index = selectedGroups.findIndex((item) => item.groupId === groupId)
-    if (index === -1) {
-      setSelectedGroups((currentGroups) => addNewGroup(currentGroups, groupId))
-    } else {
-      setSelectedGroups((currentGroups) => toggleExistedGroup(currentGroups, index))
-    }
-  }
+  const toggleSelectedGroup = (groupId: number) => toggleRelation(groupId, selectedGroups, setSelectedGroups)
 
   const {data: oldData} = useGetTechTagByIdQuery({
     variables: {id: id}
   })
-  const {data: groupList} = useGetTagGroupListQuery()
-  const allGroups = groupList?.tag_group.map((group) => ({id: group.id, name: group.name})) || []
 
   useEffect(() => {
     if (oldData?.tech_tag_by_pk) {
       setName(oldData.tech_tag_by_pk.name)
       setSelectedGroups(oldData.tech_tag_by_pk.tag2groups.map(item => (
         {
-          relationId: item.id,
+          pairId: item.id,
           status: "selected",
-          groupId: item.tag_group.id
+          relativeId: item.tag_group.id
         }
       )))
     }
@@ -50,62 +41,47 @@ export const TechTagEdit = () => {
 
   const [saveTechTag, {error: saveError, data: saveData}] = useUpdateTechTagByIdMutation({
     variables: {id: id, techTag: {name: name}},
-    refetchQueries: [GetTechTagListDocument]
   })
 
   const [deleteTechTag, {error: deleteError, data: deleteData}] = useDeleteTechTagByIdMutation({
     variables: {id: id},
-    refetchQueries: [GetTechTagListDocument]
   })
 
-  const [deleteUnusedGroupRelations] = useDeleteGroup2TagByIdsMutation({
+  const [deleteGroupRelations, {error: errorDeleteGroups}] = useDeleteGroup2TagByIdsMutation({
     variables: {
-      _in: selectedGroups.filter(item => "unselected" === item.status).map((item) => item.relationId)
-    }, refetchQueries: [GetTechTagListDocument]
+      _in: selectedGroups.filter(item => "unselected" === item.status).map((item) => item.pairId)
+    }
   })
 
-  const [createNewGroupRelations] = useInsertGroup2TagMutation({
+  const [insertGroupRelations, {error: errorInsertGroups}] = useInsertGroup2TagMutation({
     variables: {
       objects: selectedGroups.filter(item => "new" === item.status).map((item) => ({
-        tag_group_id: item.groupId,
+        tag_group_id: item.relativeId,
         tech_tag_id: id
       }))
-    }, refetchQueries: [GetTechTagListDocument]
+    }
   })
 
-  const performSaveTechTag = () => {
-    saveTechTag()
-    if (selectedGroups.findIndex(item => "new" === item.status) >= 0) {
-      createNewGroupRelations()
+  useEffect(() => {
+    if (selectedGroups.findIndex(tag => tag.status === "new") >= 0) {
+      insertGroupRelations()
     }
-    if (selectedGroups.findIndex(item => "unselected" === item.status) >= 0) {
-      deleteUnusedGroupRelations()
+    if (selectedGroups.findIndex(tag => tag.status === "unselected") >= 0) {
+      deleteGroupRelations()
     }
-  }
+  }, [saveData?.update_tech_tag_by_pk])
 
   return (
     <Stack direction={"column"} justifyContent={"flex-start"} alignItems={"flex-start"} spacing={1}>
       <Typography>Update tech tag</Typography>
 
       <TextField value={name} onChange={(event) => setName(event.target.value)}></TextField>
-      <Stack direction="row" alignItems="center" spacing={1}>
-        {allGroups.map(group => (
-          <Chip
-            key={group.id}
-            label={group.name}
-            onClick={() => toggleGroup(group.id)}
-            color={selectedGroups.findIndex((item) =>
-              item.groupId === group.id &&
-              item.status !== "unselected"
-            ) >= 0 ? "primary" : "default"
-            }
-          />
-        ))}
-      </Stack>
+      <TechTagEditGroups
+        selectedGroups={selectedGroups}
+        toggleSelectedGroup={(groupId) => toggleSelectedGroup(groupId)}
+      />
 
-      {saveError ? <Typography variant={"caption"}> Saving error: {saveError.message} </Typography> : null}
-      {deleteError ? <Typography variant={"caption"}> Deleting error: {deleteError.message} </Typography> : null}
-
+      <ApolloErrorMessage errors={[saveError, deleteError, errorInsertGroups, errorDeleteGroups]}/>
       <Stack direction="row" alignItems="center" spacing={1}>
         {deleteData?.delete_tech_tag_by_pk ?
           <Button onClick={() => navigate(-1)}>deleted, go back</Button> :
@@ -114,7 +90,7 @@ export const TechTagEdit = () => {
         }
         {saveData?.update_tech_tag_by_pk ?
           <Button onClick={() => navigate(-1)}>Saved, go back</Button> :
-          <Button disabled={!!deleteData?.delete_tech_tag_by_pk} onClick={() => performSaveTechTag()}>save</Button>
+          <Button disabled={!!deleteData?.delete_tech_tag_by_pk} onClick={() => saveTechTag()}>save</Button>
         }
       </Stack>
 

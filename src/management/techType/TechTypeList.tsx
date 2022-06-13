@@ -1,13 +1,4 @@
-import {
-  IconButton,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow
-} from "@mui/material";
+import {IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
 import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
 import {Link} from "react-router-dom";
@@ -15,7 +6,7 @@ import {Routes} from "../../StaticValues/Routes";
 import {useGetTechTypeListQuery} from "../../generated/graphql/generated";
 
 export const TechTypeList = () => {
-  const {data} = useGetTechTypeListQuery()
+  const {data} = useGetTechTypeListQuery({fetchPolicy: "no-cache"})
 
   return (
     <TableContainer component={Paper}>

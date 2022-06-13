@@ -17,7 +17,7 @@ import {Routes} from "../../StaticValues/Routes";
 import {useGetTechTagListQuery} from "../../generated/graphql/generated";
 
 export const TechTagList = () => {
-  const {data} = useGetTechTagListQuery()
+  const {data} = useGetTechTagListQuery({fetchPolicy: "no-cache"})
 
 
   return (

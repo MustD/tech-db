@@ -12,7 +12,7 @@ query getTechTypeById ($id: bigint!) {
     }
 }
 
-mutation saveTechType ($techType: tech_type_insert_input!) {
+mutation insertTechType ($techType: tech_type_insert_input!) {
     insert_tech_type_one(object: $techType) {
         id
         name
