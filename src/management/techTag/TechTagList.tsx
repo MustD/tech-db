@@ -19,7 +19,6 @@ import {useGetTechTagListQuery} from "../../generated/graphql/generated";
 export const TechTagList = () => {
   const {data} = useGetTechTagListQuery({fetchPolicy: "no-cache"})
 
-
   return (
     <TableContainer component={Paper}>
       <Table size="small">

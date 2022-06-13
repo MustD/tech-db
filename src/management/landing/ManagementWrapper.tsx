@@ -1,4 +1,4 @@
-import {Link, Outlet, useNavigate} from "react-router-dom";
+import {Outlet, useNavigate} from "react-router-dom";
 import {Routes} from "../../StaticValues/Routes";
 import {Box, Button, Stack} from "@mui/material";
 

@@ -1,13 +1,11 @@
-import {Button, Stack, TextField, Typography} from "@mui/material";
+import {Stack, TextField, Typography} from "@mui/material";
 import {useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
 import {useInsertTech2TagMutation, useInsertTechMutation} from "../../generated/graphql/generated";
 import {entity2relative, toggleRelation} from "../utils/many2many";
 import {TechEditTags, TechEditType} from "./components";
-import {ApolloErrorMessage} from "../components";
+import {ApolloErrorMessage, CreateButtonGroup} from "../components";
 
 export const TechCreate = () => {
-  const navigate = useNavigate()
   const [id, setId] = useState(0)
   const [name, setName] = useState("")
   const [link, setLink] = useState("")
@@ -51,10 +49,7 @@ export const TechCreate = () => {
       <TechEditType typeId={typeId} setTypeId={(id) => setTypeId(id)}/>
       <TechEditTags selectedTags={selectedTags} toggleSelectedTag={toggleSelectedTags}/>
       <ApolloErrorMessage errors={[errorSaving, errorInsertTag]}/>
-      {data?.insert_tech_one ?
-        <Button onClick={() => navigate(-1)}>Saved, go back</Button> :
-        <Button onClick={() => saveTechType()}>save</Button>
-      }
+      <CreateButtonGroup saved={Boolean(data)} onSave={() => saveTechType()}/>
     </Stack>
   )
 }

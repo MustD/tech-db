@@ -1,11 +1,9 @@
-import {Button, Stack, TextField, Typography} from "@mui/material";
+import {Stack, TextField, Typography} from "@mui/material";
 import {useState} from "react";
-import {useNavigate} from "react-router-dom";
 import {useInsertTechTypeMutation} from "../../generated/graphql/generated";
-import {ApolloErrorMessage} from "../components";
+import {ApolloErrorMessage, CreateButtonGroup} from "../components";
 
 export const TechTypeCreate = () => {
-  const navigate = useNavigate()
   const [name, setName] = useState("")
 
   const [saveTechType, {error: errorSave, data}] = useInsertTechTypeMutation({
@@ -17,10 +15,7 @@ export const TechTypeCreate = () => {
       <Typography>Create new tech type</Typography>
       <TextField value={name} onChange={(event) => setName(event.target.value)}></TextField>
       <ApolloErrorMessage errors={[errorSave]}/>
-      {data && data.insert_tech_type_one ?
-        <Button onClick={() => navigate(-1)}>Saved, go back</Button> :
-        <Button onClick={() => saveTechType()}>save</Button>
-      }
+      <CreateButtonGroup saved={Boolean(data)} onSave={() => saveTechType()}/>
     </Stack>
   )
 }

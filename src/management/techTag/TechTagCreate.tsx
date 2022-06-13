@@ -1,20 +1,18 @@
-import {Button, Stack, TextField, Typography} from "@mui/material";
+import {Stack, TextField, Typography} from "@mui/material";
 import {useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
 import {useInsertGroup2TagMutation, useSaveTechTagMutation} from "../../generated/graphql/generated";
 import {entity2relative, toggleRelation} from "../utils/many2many";
 import {TechTagEditGroups} from "./components";
-import {ApolloErrorMessage} from "../components";
+import {ApolloErrorMessage, CreateButtonGroup} from "../components";
 
 export const TechTagCreate = () => {
-  const navigate = useNavigate()
   const [id, setId] = useState(0)
   const [name, setName] = useState("")
   const [selectedGroups, setSelectedGroups] = useState<entity2relative[]>([])
 
   const toggleSelectedGroup = (groupId: number) => toggleRelation(groupId, selectedGroups, setSelectedGroups)
 
-  const [saveTechTag, {error: errorSaved, data: dataSaved}] = useSaveTechTagMutation({
+  const [saveTechTag, {error: errorSaved, data: data}] = useSaveTechTagMutation({
     variables: {techTag: {name: name}},
   })
 
@@ -28,10 +26,10 @@ export const TechTagCreate = () => {
   })
 
   useEffect(() => {
-    if (dataSaved?.insert_tech_tag_one?.id) {
-      setId(dataSaved?.insert_tech_tag_one?.id)
+    if (data?.insert_tech_tag_one?.id) {
+      setId(data?.insert_tech_tag_one?.id)
     }
-  }, [dataSaved])
+  }, [data])
   useEffect(() => {
     if (id > 0) {
       if (selectedGroups.findIndex(item => "new" === item.status) >= 0) {
@@ -49,10 +47,7 @@ export const TechTagCreate = () => {
         toggleSelectedGroup={(groupId) => toggleSelectedGroup(groupId)}
       />
       <ApolloErrorMessage errors={[errorSaved, errorGroups]}/>
-      {dataSaved && dataSaved.insert_tech_tag_one ?
-        <Button onClick={() => navigate(-1)}>Saved, go back</Button> :
-        <Button onClick={() => saveTechTag()}>save</Button>
-      }
+      <CreateButtonGroup saved={Boolean(data)} onSave={() => saveTechTag()}/>
     </Stack>
   )
 }

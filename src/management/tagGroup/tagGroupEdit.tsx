@@ -1,16 +1,15 @@
-import {useNavigate, useParams} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
-import {Button, Stack, TextField, Typography} from "@mui/material";
+import {Stack, TextField, Typography} from "@mui/material";
 import {
   GetTagGroupByIdDocument,
   useDeleteTagGroupByIdMutation,
   useGetTagGroupByIdQuery,
   useUpdateTagGroupByIdMutation
 } from "../../generated/graphql/generated";
-import {ApolloErrorMessage} from "../components";
+import {ApolloErrorMessage, EditButtonGroup} from "../components";
 
 export const TagGroupEdit = () => {
-  const navigate = useNavigate()
   const {tagGroupId} = useParams<{ tagGroupId: string }>()
   const id = Number(tagGroupId) || 0
   const [name, setName] = useState("")
@@ -38,17 +37,12 @@ export const TagGroupEdit = () => {
       <Typography>Update tag group</Typography>
       <TextField value={name} onChange={(event) => setName(event.target.value)}></TextField>
       <ApolloErrorMessage errors={[errorSave, errorDelete]}/>
-      <Stack direction="row" alignItems="center" spacing={1}>
-        {deleteData?.delete_tag_group_by_pk ?
-          <Button onClick={() => navigate(-1)}>deleted, go back</Button> :
-          <Button disabled={!!saveData?.update_tag_group_by_pk} color={"warning"}
-                  onClick={() => deleteTagGroup()}>delete</Button>
-        }
-        {saveData?.update_tag_group_by_pk ?
-          <Button onClick={() => navigate(-1)}>Saved, go back</Button> :
-          <Button disabled={!!deleteData?.delete_tag_group_by_pk} onClick={() => saveTagGroup()}>save</Button>
-        }
-      </Stack>
+      <EditButtonGroup
+        saved={Boolean(saveData)}
+        deleted={Boolean(deleteData)}
+        onSave={() => saveTagGroup()}
+        onDelete={() => deleteTagGroup()}
+      />
     </Stack>
   )
 }

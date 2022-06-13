@@ -1,6 +1,6 @@
-import {useNavigate, useParams} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
-import {Button, Stack, TextField, Typography} from "@mui/material";
+import {Stack, TextField, Typography} from "@mui/material";
 import {
   GetTechTagByIdDocument,
   useDeleteGroup2TagByIdsMutation,
@@ -11,10 +11,9 @@ import {
 } from "../../generated/graphql/generated";
 import {entity2relative, toggleRelation} from "../utils/many2many";
 import {TechTagEditGroups} from "./components";
-import {ApolloErrorMessage} from "../components";
+import {ApolloErrorMessage, EditButtonGroup} from "../components";
 
 export const TechTagEdit = () => {
-  const navigate = useNavigate()
   const {techTagId} = useParams<{ techTagId: string }>()
   const id = Number(techTagId) || 0
 
@@ -84,18 +83,12 @@ export const TechTagEdit = () => {
       />
 
       <ApolloErrorMessage errors={[saveError, deleteError, errorInsertGroups, errorDeleteGroups]}/>
-      <Stack direction="row" alignItems="center" spacing={1}>
-        {deleteData?.delete_tech_tag_by_pk ?
-          <Button onClick={() => navigate(-1)}>deleted, go back</Button> :
-          <Button disabled={!!saveData?.update_tech_tag_by_pk} color={"warning"}
-                  onClick={() => deleteTechTag()}>delete</Button>
-        }
-        {saveData?.update_tech_tag_by_pk ?
-          <Button onClick={() => navigate(-1)}>Saved, go back</Button> :
-          <Button disabled={!!deleteData?.delete_tech_tag_by_pk} onClick={() => saveTechTag()}>save</Button>
-        }
-      </Stack>
-
+      <EditButtonGroup
+        saved={Boolean(saveData)}
+        deleted={Boolean(deleteData)}
+        onSave={() => saveTechTag()}
+        onDelete={() => deleteTechTag()}
+      />
     </Stack>
   )
 }
