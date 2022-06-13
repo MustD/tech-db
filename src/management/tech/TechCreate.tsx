@@ -1,20 +1,45 @@
-import {Button, FormControl, InputLabel, MenuItem, Select, Stack, TextField, Typography} from "@mui/material";
-import {useState} from "react";
+import {Button, Stack, TextField, Typography} from "@mui/material";
+import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {GetTechListDocument, useGetTechTypeListQuery, useInsertTechMutation} from "../../generated/graphql/generated";
+import {useInsertTech2TagMutation, useInsertTechMutation} from "../../generated/graphql/generated";
+import {entity2relative, toggleRelation} from "../utils/many2many";
+import {TechEditTags, TechEditType} from "./components";
+import {ApolloErrorMessage} from "../components";
 
 export const TechCreate = () => {
   const navigate = useNavigate()
+  const [id, setId] = useState(0)
   const [name, setName] = useState("")
   const [link, setLink] = useState("")
-  const [type, setType] = useState("")
+  const [typeId, setTypeId] = useState("")
+  const [selectedTags, setSelectedTags] = useState<entity2relative[]>([])
 
-  const {data: techTypes} = useGetTechTypeListQuery()
+  const toggleSelectedTags = (tagId: number) => toggleRelation(tagId, selectedTags, setSelectedTags)
 
-  const [saveTechType, {error, data}] = useInsertTechMutation({
-    variables: {tech: {name: name, link: link, tech_type_id: Number(type)}},
-    refetchQueries: [GetTechListDocument]
+  const [saveTechType, {error: errorSaving, data}] = useInsertTechMutation({
+    variables: {tech: {name: name, link: link, tech_type_id: Number(typeId)}},
   })
+
+  const [insertTech2Tag, {error: errorInsertTag}] = useInsertTech2TagMutation({
+    variables: {
+      objects: selectedTags.filter(tag => "new" === tag.status).map(tag => ({
+        tech_id: id,
+        tag_id: tag.relativeId
+      }))
+    },
+  })
+
+  useEffect(() => {
+    if (data?.insert_tech_one?.id) {
+      setId(data.insert_tech_one.id)
+    }
+  }, [data?.insert_tech_one])
+
+  useEffect(() => {
+    if (id > 0) {
+      insertTech2Tag()
+    }
+  }, [id])
 
   return (
     <Stack direction={"column"} justifyContent={"flex-start"} alignItems={"flex-start"} spacing={2}>
@@ -23,20 +48,9 @@ export const TechCreate = () => {
                  onChange={(event) => setName(event.target.value)}/>
       <TextField size={"small"} label={"Tech link"} value={link}
                  onChange={(event) => setLink(event.target.value)}/>
-      <FormControl sx={{minWidth: 230}} size={"small"}>
-        <InputLabel id="tech-type-select-label">Type</InputLabel>
-        <Select
-          labelId="tech-type-select-label"
-          value={type}
-          label="Type"
-          onChange={(event) => setType(event.target.value as string)}
-        >
-          {techTypes && techTypes.tech_type.map((techType) =>
-            <MenuItem key={techType.id} value={String(techType.id)}>{techType.name}</MenuItem>
-          )}
-        </Select>
-      </FormControl>
-      {error ? <Typography variant={"caption"}> {error.message} </Typography> : null}
+      <TechEditType typeId={typeId} setTypeId={(id) => setTypeId(id)}/>
+      <TechEditTags selectedTags={selectedTags} toggleSelectedTag={toggleSelectedTags}/>
+      <ApolloErrorMessage errors={[errorSaving, errorInsertTag]}/>
       {data?.insert_tech_one ?
         <Button onClick={() => navigate(-1)}>Saved, go back</Button> :
         <Button onClick={() => saveTechType()}>save</Button>

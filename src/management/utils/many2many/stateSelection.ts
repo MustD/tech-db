@@ -1,7 +1,22 @@
+import React from "react";
+
 export type entity2relative = {
   pairId: number
   status: "selected" | "unselected" | "new"
   relativeId: number
+}
+
+export const toggleRelation = (
+  tagId: number,
+  selectedTags: entity2relative[],
+  setStateFn: React.Dispatch<React.SetStateAction<entity2relative[]>>
+) => {
+  const index = selectedTags.findIndex((item) => item.relativeId === tagId)
+  if (index === -1) {
+    setStateFn((currentRel) => addNewRelation(currentRel, tagId))
+  } else {
+    setStateFn((currentRel) => toggleRelationByIndex(currentRel, index))
+  }
 }
 
 export const addNewRelation = (relations: entity2relative[], relativeId: number): entity2relative[] =>
