@@ -7,7 +7,7 @@ export const Routes = {
     techTagEdit: "edit",
     tagGroup: "tag-group",
     tagGroupEdit: "edit",
-    tech: "tech",
+    tech: "technologies",
     techEdit: "edit",
   }
 }
