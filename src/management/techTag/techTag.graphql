@@ -45,7 +45,7 @@ mutation deleteTechTagById ($id: bigint!) {
     }
 }
 
-mutation insertTech2Tag($objects: [group2tag_insert_input!]!) {
+mutation insertGroup2Tag($objects: [group2tag_insert_input!]!) {
     insert_group2tag(objects: $objects) {
         returning {
             id
@@ -53,7 +53,7 @@ mutation insertTech2Tag($objects: [group2tag_insert_input!]!) {
     }
 }
 
-mutation deleteTech2TagById($_in: [bigint!]) {
+mutation deleteGroup2TagByIds($_in: [bigint!]) {
     delete_group2tag(where: {id: {_in: $_in}}) {
         affected_rows
     }

@@ -2,10 +2,12 @@ import {useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {Button, Chip, Stack, TextField, Typography} from "@mui/material";
 import {
-  GetTechTagListDocument, useDeleteTech2TagByIdMutation,
+  GetTechTagListDocument,
+  useDeleteGroup2TagByIdsMutation,
   useDeleteTechTagByIdMutation,
   useGetTagGroupListQuery,
-  useGetTechTagByIdQuery, useInsertTech2TagMutation,
+  useGetTechTagByIdQuery,
+  useInsertGroup2TagMutation,
   useUpdateTechTagByIdMutation
 } from "../../generated/graphql/generated";
 import {addNewGroup, tech2group, toggleExistedGroup} from "./techTagService";
@@ -56,19 +58,19 @@ export const TechTagEdit = () => {
     refetchQueries: [GetTechTagListDocument]
   })
 
-  const [deleteUnusedGroupRelations] = useDeleteTech2TagByIdMutation({
+  const [deleteUnusedGroupRelations] = useDeleteGroup2TagByIdsMutation({
     variables: {
       _in: selectedGroups.filter(item => "unselected" === item.status).map((item) => item.relationId)
-    },
+    }, refetchQueries: [GetTechTagListDocument]
   })
 
-  const [createNewGroupRelations] = useInsertTech2TagMutation({
+  const [createNewGroupRelations] = useInsertGroup2TagMutation({
     variables: {
       objects: selectedGroups.filter(item => "new" === item.status).map((item) => ({
         tag_group_id: item.groupId,
         tech_tag_id: id
       }))
-    },
+    }, refetchQueries: [GetTechTagListDocument]
   })
 
   const performSaveTechTag = () => {

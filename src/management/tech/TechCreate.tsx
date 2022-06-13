@@ -1,7 +1,7 @@
 import {Button, FormControl, InputLabel, MenuItem, Select, Stack, TextField, Typography} from "@mui/material";
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {GetTechListDocument, useGetTechTypeListQuery, useSaveTechMutation} from "../../generated/graphql/generated";
+import {GetTechListDocument, useGetTechTypeListQuery, useInsertTechMutation} from "../../generated/graphql/generated";
 
 export const TechCreate = () => {
   const navigate = useNavigate()
@@ -11,7 +11,7 @@ export const TechCreate = () => {
 
   const {data: techTypes} = useGetTechTypeListQuery()
 
-  const [saveTechType, {error, data}] = useSaveTechMutation({
+  const [saveTechType, {error, data}] = useInsertTechMutation({
     variables: {tech: {name: name, link: link, tech_type_id: Number(type)}},
     refetchQueries: [GetTechListDocument]
   })

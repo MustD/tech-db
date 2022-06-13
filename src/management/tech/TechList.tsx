@@ -1,7 +1,7 @@
 import {
-  Button,
+  Button, Chip,
   IconButton,
-  Paper,
+  Paper, Stack,
   Table,
   TableBody,
   TableCell,
@@ -18,7 +18,6 @@ import {useGetTechListQuery} from "../../generated/graphql/generated";
 export const TechList = () => {
   const {data} = useGetTechListQuery()
 
-
   return (
     <TableContainer component={Paper}>
       <Table size="small">
@@ -28,6 +27,7 @@ export const TechList = () => {
             <TableCell>Name</TableCell>
             <TableCell>Type</TableCell>
             <TableCell>Link</TableCell>
+            <TableCell>Tags</TableCell>
             <TableCell>Actions</TableCell>
           </TableRow>
         </TableHead>
@@ -39,11 +39,19 @@ export const TechList = () => {
               <TableCell>{tech.tech_type.name}</TableCell>
               <TableCell><Button variant="outlined" href={tech.link} target={"_blank"}>{tech.link}</Button></TableCell>
               <TableCell>
+                <Stack direction="row" spacing={1}>
+                  {tech.tech2tags.map((tag) =>
+                    <Chip key={tag.tech_tag.id} label={tag.tech_tag.name}/>
+                  )}
+                </Stack>
+              </TableCell>
+              <TableCell>
                 <Link to={`${Routes.management.techEdit}/${tech.id}`}><IconButton><EditIcon/> </IconButton></Link>
               </TableCell>
             </TableRow>
           )}
           <TableRow>
+            <TableCell/>
             <TableCell/>
             <TableCell/>
             <TableCell/>

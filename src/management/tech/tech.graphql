@@ -7,10 +7,16 @@ query getTechList {
             id
             name
         }
+        tech2tags {
+            tech_tag {
+                id
+                name
+            }
+        }
     }
 }
 
-mutation saveTech($tech: tech_insert_input!) {
+mutation insertTech($tech: tech_insert_input!) {
     insert_tech_one(object: $tech){
         id
     }
@@ -22,6 +28,18 @@ query getTechById($id: bigint!) {
         link
         name
         tech_type_id
+        tech2tags {
+            id
+            tech_tag {
+                id
+            }
+        }
+    }
+}
+
+mutation updateTechById($id: bigint = "", $_set: tech_set_input = {}) {
+    update_tech_by_pk(pk_columns: {id: $id}, _set: $_set) {
+        id
     }
 }
 
@@ -30,3 +48,17 @@ mutation deleteTechById($id: bigint!) {
         id
     }
 }
+
+mutation insertTech2Tag($objects: [tech2tag_insert_input!]!) {
+    insert_tech2tag(objects: $objects) {
+        affected_rows
+    }
+}
+
+mutation deleteTech2TagByIds($_in: [bigint!]) {
+    delete_tech2tag(where: {id: {_in: $_in}}) {
+        affected_rows
+    }
+}
+
+
