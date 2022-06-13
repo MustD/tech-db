@@ -1,7 +1,7 @@
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import {Routes as RouteNames} from './StaticValues/Routes';
 import {Landing} from "./public/landing";
-import {ManagementLanding} from "./management/landing";
+import {ManagementWrapper} from "./management/landing";
 import {TechTypeCreate, TechTypeEdit, TechTypeList} from "./management/techType";
 import {TechTagCreate, TechTagEdit, TechTagList} from "./management/techTag";
 import {TagGroupCreate, TagGroupEdit, TagGroupList} from "./management/tagGroup";
@@ -13,8 +13,7 @@ export const AppRouter = () => {
       <Routes>
         <Route path="/">
           <Route index element={<Landing/>}/>
-          <Route path={RouteNames.management.index}>
-            <Route index element={<ManagementLanding/>}/>
+          <Route path={RouteNames.management.index} element={<ManagementWrapper/>}>
 
             <Route path={RouteNames.management.techType}>
               <Route index element={<TechTypeList/>}/>

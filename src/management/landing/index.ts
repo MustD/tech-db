@@ -1,1 +1,1 @@
-export * from "./ManagementLanding"
+export * from "./ManagementWrapper"
