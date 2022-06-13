@@ -1,0 +1,23 @@
+query getTechWithSubList {
+    tech(order_by: {id: asc}) {
+        id
+        link
+        name
+        tech_type {
+            id
+            name
+        }
+        tech2tags {
+            tech_tag {
+                id
+                name
+                tag2groups{
+                    tag_group {
+                        id
+                        name
+                    }
+                }
+            }
+        }
+    }
+}

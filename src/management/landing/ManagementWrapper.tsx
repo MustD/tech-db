@@ -6,6 +6,11 @@ export const ManagementWrapper = () => {
   const navigate = useNavigate()
   const managementNavigation = [
     {
+      to: "/",
+      name: "home",
+      match: false
+    },
+    {
       to: Routes.management.tech,
       name: "Technologies",
       match: useMatch({path: `${Routes.management.index}/${Routes.management.tech}`, end: false})
