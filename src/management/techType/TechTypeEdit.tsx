@@ -2,6 +2,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {Button, Stack, TextField, Typography} from "@mui/material";
 import {
+  GetTechTypeByIdDocument,
   useDeleteTechTypeByIdMutation,
   useGetTechTypeByIdQuery,
   useUpdateTechTypeMutation
@@ -26,6 +27,7 @@ export const TechTypeEdit = () => {
 
   const [saveTechType, {error: errorSave, data: saveData}] = useUpdateTechTypeMutation({
     variables: {id: id, techTypeData: {name: name}},
+    refetchQueries: [GetTechTypeByIdDocument]
   })
 
   const [deleteTechType, {error: errorDelete, data: deleteData}] = useDeleteTechTypeByIdMutation({

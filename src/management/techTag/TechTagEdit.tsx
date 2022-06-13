@@ -2,6 +2,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {Button, Stack, TextField, Typography} from "@mui/material";
 import {
+  GetTechTagByIdDocument,
   useDeleteGroup2TagByIdsMutation,
   useDeleteTechTagByIdMutation,
   useGetTechTagByIdQuery,
@@ -41,6 +42,7 @@ export const TechTagEdit = () => {
 
   const [saveTechTag, {error: saveError, data: saveData}] = useUpdateTechTagByIdMutation({
     variables: {id: id, techTag: {name: name}},
+    refetchQueries: [GetTechTagByIdDocument]
   })
 
   const [deleteTechTag, {error: deleteError, data: deleteData}] = useDeleteTechTagByIdMutation({

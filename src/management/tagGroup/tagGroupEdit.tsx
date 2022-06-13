@@ -2,6 +2,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {Button, Stack, TextField, Typography} from "@mui/material";
 import {
+  GetTagGroupByIdDocument,
   useDeleteTagGroupByIdMutation,
   useGetTagGroupByIdQuery,
   useUpdateTagGroupByIdMutation
@@ -25,7 +26,7 @@ export const TagGroupEdit = () => {
   }, [oldData?.tag_group_by_pk])
 
   const [saveTagGroup, {error: errorSave, data: saveData}] = useUpdateTagGroupByIdMutation({
-    variables: {id: id, tagGroup: {name: name}},
+    variables: {id: id, tagGroup: {name: name}}, refetchQueries: [GetTagGroupByIdDocument]
   })
 
   const [deleteTagGroup, {error: errorDelete, data: deleteData}] = useDeleteTagGroupByIdMutation({

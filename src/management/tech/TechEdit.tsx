@@ -2,6 +2,7 @@ import {Button, Stack, TextField, Typography} from "@mui/material";
 import {useEffect, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import {
+  GetTechByIdDocument,
   useDeleteTech2TagByIdsMutation,
   useDeleteTechByIdMutation,
   useGetTechByIdQuery,
@@ -44,7 +45,7 @@ export const TechEdit = () => {
     variables: {
       id: id,
       _set: {name: name, link: link, tech_type_id: Number(typeId)}
-    },
+    }, refetchQueries: [GetTechByIdDocument]
   })
 
   const [deleteTech, {error: errorDeleting, data: deleteData}] = useDeleteTechByIdMutation({
