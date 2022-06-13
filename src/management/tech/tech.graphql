@@ -1,0 +1,32 @@
+query getTechList {
+    tech(order_by: {id: asc}) {
+        id
+        link
+        name
+        tech_type {
+            id
+            name
+        }
+    }
+}
+
+mutation saveTech($tech: tech_insert_input!) {
+    insert_tech_one(object: $tech){
+        id
+    }
+}
+
+query getTechById($id: bigint!) {
+    tech_by_pk(id: $id) {
+        id
+        link
+        name
+        tech_type_id
+    }
+}
+
+mutation deleteTechById($id: bigint!) {
+    delete_tech_by_pk(id: $id) {
+        id
+    }
+}
