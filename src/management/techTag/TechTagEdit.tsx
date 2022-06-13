@@ -23,7 +23,7 @@ export const TechTagEdit = () => {
   const toggleSelectedGroup = (groupId: number) => toggleRelation(groupId, selectedGroups, setSelectedGroups)
 
   const {data: oldData} = useGetTechTagByIdQuery({
-    variables: {id: id}
+    variables: {id: id}, fetchPolicy: "no-cache"
   })
 
   useEffect(() => {
@@ -41,7 +41,6 @@ export const TechTagEdit = () => {
 
   const [saveTechTag, {error: saveError, data: saveData}] = useUpdateTechTagByIdMutation({
     variables: {id: id, techTag: {name: name}},
-    refetchQueries: [GetTechTagByIdDocument]
   })
 
   const [deleteTechTag, {error: deleteError, data: deleteData}] = useDeleteTechTagByIdMutation({

@@ -15,7 +15,7 @@ export const TechTypeEdit = () => {
   const [name, setName] = useState("")
 
   const {data: oldData} = useGetTechTypeByIdQuery({
-    variables: {id: id}
+    variables: {id: id}, fetchPolicy: "no-cache"
   })
 
   useEffect(() => {
@@ -26,7 +26,6 @@ export const TechTypeEdit = () => {
 
   const [saveTechType, {error: errorSave, data: saveData}] = useUpdateTechTypeMutation({
     variables: {id: id, techTypeData: {name: name}},
-    refetchQueries: [GetTechTypeByIdDocument]
   })
 
   const [deleteTechType, {error: errorDelete, data: deleteData}] = useDeleteTechTypeByIdMutation({

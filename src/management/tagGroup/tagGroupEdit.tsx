@@ -15,8 +15,8 @@ export const TagGroupEdit = () => {
   const [name, setName] = useState("")
 
   const {data: oldData} = useGetTagGroupByIdQuery({
-    variables: {id: id}
-  })
+    variables: {id: id}, fetchPolicy: "no-cache"
+})
 
   useEffect(() => {
     if (oldData?.tag_group_by_pk !== undefined && oldData?.tag_group_by_pk !== null) {
@@ -25,7 +25,7 @@ export const TagGroupEdit = () => {
   }, [oldData?.tag_group_by_pk])
 
   const [saveTagGroup, {error: errorSave, data: saveData}] = useUpdateTagGroupByIdMutation({
-    variables: {id: id, tagGroup: {name: name}}, refetchQueries: [GetTagGroupByIdDocument]
+    variables: {id: id, tagGroup: {name: name}}
   })
 
   const [deleteTagGroup, {error: errorDelete, data: deleteData}] = useDeleteTagGroupByIdMutation({

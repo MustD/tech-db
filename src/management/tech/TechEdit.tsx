@@ -23,7 +23,7 @@ export const TechEdit = () => {
   const [selectedTags, setSelectedTags] = useState<entity2relative[]>([])
 
   const {data: oldData} = useGetTechByIdQuery(
-    {variables: {id: id}}
+    {variables: {id: id}, fetchPolicy: "no-cache"}
   )
   useEffect(() => {
     if (oldData?.tech_by_pk) {
@@ -44,7 +44,7 @@ export const TechEdit = () => {
     variables: {
       id: id,
       _set: {name: name, link: link, tech_type_id: Number(typeId)}
-    }, refetchQueries: [GetTechByIdDocument]
+    }
   })
 
   const [deleteTech, {error: errorDeleting, data: deleteData}] = useDeleteTechByIdMutation({
