@@ -1,30 +1,50 @@
-import {Stack} from "@mui/material";
+import {Button, Card, CardActions, CardContent, Chip, Stack, Typography} from "@mui/material";
 import {useGetTechWithSubListQuery} from "../../generated/graphql/generated";
+import {extractTechInfo} from "./service";
 
 export const Technologies = () => {
-  const {data} = useGetTechWithSubListQuery()
+  const {data, loading} = useGetTechWithSubListQuery({fetchPolicy: "no-cache"})
+
+  if (!data || loading) {
+    return (<div>loading</div>)
+  }
+  const {tech, groups, tags, structure} = extractTechInfo(data)
+
+  const getTech = (id: string) => {
+    const emptyTech = {techId: "", techName: "", techType: "", techLink: "",}
+    return tech.get(id, emptyTech)
+  }
+
+  const getGroup = (id: string) => {
+    const emptyGroup = {groupId: "", groupName: ""}
+    return groups.get(id, emptyGroup)
+  }
+
+  const getTag = (id: string) => {
+    const emptyTag = {tagId: "", tagName: ""}
+    return tags.get(id, emptyTag)
+  }
+
   return (
-    <Stack>
-      {data && data.tech.map(tech =>
-        <div key={tech.id}>
-          <span>{tech.name}</span>
-          <span>{tech.link}</span>
-          <span>{tech.tech_type.name}</span>
-          <div>
-            <div>{tech.tech2tags.map(tag =>
-              <div key={tag.tech_tag.id}>
-                <span>{tag.tech_tag.name}</span>
-                <div>
-                  {tag.tech_tag.tag2groups.map(group =>
-                    <div key={group.tag_group.id}>
-                      <span>{group.tag_group.name}</span>
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}</div>
-          </div>
-        </div>
+    <Stack spacing={1} direction={"row"}>
+      {structure.entrySeq().map(([techId, groups]) =>
+        <Card key={techId} sx={{ minWidth: 300 }}>
+          <CardContent>
+            <Typography variant={"h4"}>{getTech(techId).techName}</Typography>
+            <Typography variant={"overline"}>{getTech(techId).techType}</Typography>
+            <Stack  direction={"column"} spacing={1}>
+            {groups.entrySeq().map(([groupId, tags]) =>
+              <Stack key={groupId} direction={"row"} spacing={1}>
+                <Typography>{getGroup(groupId).groupName}</Typography>
+                {tags.toList().map(tagId => <Chip key={tagId} label={getTag(tagId).tagName} size={"small"}/>)}
+              </Stack>
+            )}
+            </Stack>
+          </CardContent>
+          <CardActions>
+            <Button href={getTech(techId).techLink} target={"_blank"}>Learn More</Button>
+          </CardActions>
+        </Card>
       )}
     </Stack>
   )
