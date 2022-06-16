@@ -39,3 +39,19 @@ export const extractTechInfo = (data: GetTechWithSubListQuery) => {
 
   return {tech: techs, groups: groups, tags: tags, structure: structure}
 }
+
+type GqlFilter = {
+  tech2tags?: {
+    tech_tag: {
+      id: { _in: string[] }
+    }
+  }
+}
+
+export const getFilter = (tags: string[]): GqlFilter => {
+  if (tags.length <= 1 && tags[0] === "") {
+    return {}
+  }
+  return {tech2tags: {tech_tag: {id: {_in: tags}}}}
+
+}

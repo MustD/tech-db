@@ -1,12 +1,41 @@
-import {Button, Card, CardActions, CardContent, Chip, Stack, Typography} from "@mui/material";
-import {useGetTechWithSubListQuery} from "../../generated/graphql/generated";
-import {extractTechInfo} from "./service";
+import {
+  Box,
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  Chip,
+  FormControl,
+  InputLabel, LinearProgress, MenuItem,
+  Select,
+  Stack,
+  Typography
+} from "@mui/material";
+import {useGetAllUsedTagsQuery, useGetTechWithSubListQuery} from "../../generated/graphql/generated";
+import {extractTechInfo, getFilter} from "./service";
+import {useEffect, useState} from "react";
 
 export const Technologies = () => {
-  const {data, loading} = useGetTechWithSubListQuery({fetchPolicy: "no-cache"})
+  const [tagFilter, setTagFilter] = useState("")
+
+  const {data, loading, refetch} = useGetTechWithSubListQuery({
+    variables: {where: getFilter([tagFilter])},
+    fetchPolicy: "no-cache"
+  })
+
+  const {data: usedTagsData} = useGetAllUsedTagsQuery()
+  const usedTags = usedTagsData?.tech_tag || []
+
+  useEffect(() => {
+    refetch({where: getFilter([tagFilter])})
+  }, [tagFilter])
 
   if (!data || loading) {
-    return (<div>loading</div>)
+    return (
+      <Box sx={{width: '100%'}}>
+        <LinearProgress/>
+      </Box>
+    )
   }
   const {tech, groups, tags, structure} = extractTechInfo(data)
 
@@ -26,26 +55,45 @@ export const Technologies = () => {
   }
 
   return (
-    <Stack spacing={1} direction={"row"}>
-      {structure.entrySeq().map(([techId, groups]) =>
-        <Card key={techId} sx={{ minWidth: 300 }}>
-          <CardContent>
-            <Typography variant={"h4"}>{getTech(techId).techName}</Typography>
-            <Typography variant={"overline"}>{getTech(techId).techType}</Typography>
-            <Stack  direction={"column"} spacing={1}>
-            {groups.entrySeq().map(([groupId, tags]) =>
-              <Stack key={groupId} direction={"row"} spacing={1}>
-                <Typography>{getGroup(groupId).groupName}</Typography>
-                {tags.toList().map(tagId => <Chip key={tagId} label={getTag(tagId).tagName} size={"small"}/>)}
-              </Stack>
+    <Stack spacing={2} direction={"column"}>
+      <Stack spacing={1} direction={"row"}>
+        <FormControl fullWidth>
+          <InputLabel id="tag-filter-select-label">Tag</InputLabel>
+          <Select
+            labelId="tag-filter-select-label"
+            id="tag-filter-select"
+            value={tagFilter}
+            label="Tag"
+            onChange={(event) => setTagFilter(event.target.value as string)}
+          >
+            <MenuItem value={""}>Empty</MenuItem>
+            {usedTags.map((tag) =>
+              <MenuItem key={tag.id} value={tag.id}>{tag.name}</MenuItem>
             )}
-            </Stack>
-          </CardContent>
-          <CardActions>
-            <Button href={getTech(techId).techLink} target={"_blank"}>Learn More</Button>
-          </CardActions>
-        </Card>
-      )}
+          </Select>
+        </FormControl>
+      </Stack>
+      <Stack spacing={1} direction={"row"}>
+        {structure.entrySeq().map(([techId, groups]) =>
+          <Card key={techId} sx={{minWidth: 300}}>
+            <CardContent>
+              <Typography variant={"h4"}>{getTech(techId).techName}</Typography>
+              <Typography variant={"overline"}>{getTech(techId).techType}</Typography>
+              <Stack direction={"column"} spacing={1}>
+                {groups.entrySeq().map(([groupId, tags]) =>
+                  <Stack key={groupId} direction={"row"} spacing={1}>
+                    <Typography>{getGroup(groupId).groupName}</Typography>
+                    {tags.toList().map(tagId => <Chip key={tagId} label={getTag(tagId).tagName} size={"small"}/>)}
+                  </Stack>
+                )}
+              </Stack>
+            </CardContent>
+            <CardActions>
+              <Button href={getTech(techId).techLink} target={"_blank"}>Learn More</Button>
+            </CardActions>
+          </Card>
+        )}
+      </Stack>
     </Stack>
   )
 }

@@ -1,5 +1,5 @@
-query getTechWithSubList {
-    tech(order_by: {id: asc}) {
+query getTechWithSubList($where: tech_bool_exp!) {
+    tech(order_by: {id: asc}, where: $where) {
         id
         link
         name
@@ -11,7 +11,7 @@ query getTechWithSubList {
             tech_tag {
                 id
                 name
-                tag2groups{
+                tag2groups {
                     tag_group {
                         id
                         name
@@ -19,5 +19,12 @@ query getTechWithSubList {
                 }
             }
         }
+    }
+}
+
+query getAllUsedTags {
+    tech_tag(where: {tech2tags: {tech_id: {_is_null: false}}}) {
+        id
+        name
     }
 }
