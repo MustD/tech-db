@@ -1,8 +1,8 @@
 query getTechTagList {
-    tech_tag(order_by: {id: asc}) {
+    tech_db_tech_tag(order_by: {id: asc}) {
         id
         name
-        tag2groups {
+        group2tags {
             id
             tag_group {
                 id
@@ -12,11 +12,11 @@ query getTechTagList {
     }
 }
 
-query getTechTagByID ($id: bigint!)  {
-    tech_tag_by_pk(id: $id) {
+query getTechTagByID ($id: uuid!)  {
+    tech_db_tech_tag_by_pk(id: $id) {
         id
         name
-        tag2groups {
+        group2tags {
             id
             tag_group {
                 id
@@ -26,35 +26,35 @@ query getTechTagByID ($id: bigint!)  {
     }
 }
 
-mutation saveTechTag ($techTag: tech_tag_insert_input!) {
-    insert_tech_tag_one(object: $techTag) {
+mutation saveTechTag ($techTag: tech_db_tech_tag_insert_input!) {
+    insert_tech_db_tech_tag_one(object: $techTag) {
         id
         name
     }
 }
 
-mutation updateTechTagById ($id: bigint!, $techTag: tech_tag_set_input!) {
-    update_tech_tag_by_pk(pk_columns: {id: $id}, _set: $techTag ) {
+mutation updateTechTagById ($id: uuid!, $techTag: tech_db_tech_tag_set_input!) {
+    update_tech_db_tech_tag_by_pk(pk_columns: {id: $id}, _set: $techTag ) {
         id
     }
 }
 
-mutation deleteTechTagById ($id: bigint!) {
-    delete_tech_tag_by_pk(id: $id) {
+mutation deleteTechTagById ($id: uuid!) {
+    delete_tech_db_tech_tag_by_pk(id: $id) {
         id
     }
 }
 
-mutation insertGroup2Tag($objects: [group2tag_insert_input!]!) {
-    insert_group2tag(objects: $objects) {
+mutation insertGroup2Tag($objects: [tech_db_group2tag_insert_input!]!) {
+    insert_tech_db_group2tag(objects: $objects) {
         returning {
             id
         }
     }
 }
 
-mutation deleteGroup2TagByIds($_in: [bigint!]) {
-    delete_group2tag(where: {id: {_in: $_in}}) {
+mutation deleteGroup2TagByIds($_in: [uuid!]) {
+    delete_tech_db_group2tag(where: {id: {_in: $_in}}) {
         affected_rows
     }
 }

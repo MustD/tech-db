@@ -6,16 +6,16 @@ import {TechEditTags, TechEditType} from "./components";
 import {ApolloErrorMessage, CreateButtonGroup} from "../components";
 
 export const TechCreate = () => {
-  const [id, setId] = useState(0)
+  const [id, setId] = useState("")
   const [name, setName] = useState("")
   const [link, setLink] = useState("")
   const [typeId, setTypeId] = useState("")
   const [selectedTags, setSelectedTags] = useState<entity2relative[]>([])
 
-  const toggleSelectedTags = (tagId: number) => toggleRelation(tagId, selectedTags, setSelectedTags)
+  const toggleSelectedTags = (tagId: string) => toggleRelation(tagId, selectedTags, setSelectedTags)
 
   const [saveTechType, {error: errorSaving, data}] = useInsertTechMutation({
-    variables: {tech: {name: name, link: link, tech_type_id: Number(typeId)}},
+    variables: {tech: {name: name, link: link, tech_type_id: typeId}},
   })
 
   const [insertTech2Tag, {error: errorInsertTag}] = useInsertTech2TagMutation({
@@ -28,13 +28,13 @@ export const TechCreate = () => {
   })
 
   useEffect(() => {
-    if (data?.insert_tech_one?.id) {
-      setId(data.insert_tech_one.id)
+    if (data?.insert_tech_db_tech_one?.id) {
+      setId(data.insert_tech_db_tech_one.id)
     }
-  }, [data?.insert_tech_one])
+  }, [data?.insert_tech_db_tech_one])
 
   useEffect(() => {
-    if (id > 0) {
+    if (id !== "") {
       insertTech2Tag()
     }
   }, [id])

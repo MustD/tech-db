@@ -1,32 +1,32 @@
 query getTechTypeList {
-    tech_type (order_by: {id: asc}) {
+    tech_db_tech_type (order_by: {id: asc}) {
         id
         name
     }
 }
 
-query getTechTypeById ($id: bigint!) {
-    tech_type_by_pk(id: $id) {
+query getTechTypeById ($id: uuid!) {
+    tech_db_tech_type_by_pk(id: $id) {
         id
         name
     }
 }
 
-mutation insertTechType ($techType: tech_type_insert_input!) {
-    insert_tech_type_one(object: $techType) {
+mutation insertTechType ($techType: tech_db_tech_type_insert_input!) {
+    insert_tech_db_tech_type_one(object: $techType) {
         id
         name
     }
 }
 
-mutation updateTechType ($id: bigint!, $techTypeData: tech_type_set_input!) {
-    update_tech_type_by_pk(pk_columns: {id: $id}, _set: $techTypeData) {
+mutation updateTechType ($id: uuid!, $techTypeData: tech_db_tech_type_set_input!) {
+    update_tech_db_tech_type_by_pk(pk_columns: {id: $id}, _set: $techTypeData) {
         id
     }
 }
 
-mutation deleteTechTypeById ($id: bigint!) {
-    delete_tech_type_by_pk(id: $id) {
+mutation deleteTechTypeById ($id: uuid!) {
+    delete_tech_db_tech_type_by_pk(id: $id) {
         id
     }
 }

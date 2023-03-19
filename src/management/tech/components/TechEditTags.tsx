@@ -8,11 +8,11 @@ export const TechEditTags = (
     selectedTags
   }: {
     selectedTags: entity2relative[]
-    toggleSelectedTag: (tagId: number) => void
+    toggleSelectedTag: (tagId: string) => void
   }
 ) => {
   const {data: tags} = useGetTechTagListQuery()
-  const allTags = tags?.tech_tag.map((tag) => ({id: tag.id, name: tag.name})) || []
+  const allTags = tags?.tech_db_tech_tag.map((tag) => ({id: tag.id, name: tag.name})) || []
 
   return (
     <Stack direction="row" alignItems="center" spacing={1}>

@@ -2,7 +2,6 @@ import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {Stack, TextField, Typography} from "@mui/material";
 import {
-  GetTagGroupByIdDocument,
   useDeleteTagGroupByIdMutation,
   useGetTagGroupByIdQuery,
   useUpdateTagGroupByIdMutation
@@ -11,7 +10,7 @@ import {ApolloErrorMessage, EditButtonGroup} from "../components";
 
 export const TagGroupEdit = () => {
   const {tagGroupId} = useParams<{ tagGroupId: string }>()
-  const id = Number(tagGroupId) || 0
+  const id = tagGroupId || ""
   const [name, setName] = useState("")
 
   const {data: oldData} = useGetTagGroupByIdQuery({
@@ -19,10 +18,10 @@ export const TagGroupEdit = () => {
 })
 
   useEffect(() => {
-    if (oldData?.tag_group_by_pk !== undefined && oldData?.tag_group_by_pk !== null) {
-      setName(oldData.tag_group_by_pk.name)
+    if (oldData?.tech_db_tag_group_by_pk !== undefined && oldData?.tech_db_tag_group_by_pk !== null) {
+      setName(oldData.tech_db_tag_group_by_pk.name)
     }
-  }, [oldData?.tag_group_by_pk])
+  }, [oldData?.tech_db_tag_group_by_pk])
 
   const [saveTagGroup, {error: errorSave, data: saveData}] = useUpdateTagGroupByIdMutation({
     variables: {id: id, tagGroup: {name: name}}

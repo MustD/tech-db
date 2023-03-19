@@ -31,13 +31,13 @@ export const TechTagList = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data && data.tech_tag.map((tag) =>
+          {data && data.tech_db_tech_tag.map((tag) =>
             <TableRow key={tag.id}>
               <TableCell> {tag.id} </TableCell>
               <TableCell>{tag.name}</TableCell>
               <TableCell>
                 <Stack direction="row" spacing={1}>
-                  {tag.tag2groups.map((group) =>
+                  {tag.group2tags.map((group) =>
                     <Chip key={group.tag_group.id} label={group.tag_group.name}/>
                   )}
                 </Stack>

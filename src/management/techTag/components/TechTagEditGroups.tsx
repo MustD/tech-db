@@ -8,12 +8,12 @@ export const TechTagEditGroups = (
     toggleSelectedGroup
   }: {
     selectedGroups: entity2relative[],
-    toggleSelectedGroup: (id: number) => void
+    toggleSelectedGroup: (id: string) => void
   }
 ) => {
 
   const {data: groupList} = useGetTagGroupListQuery()
-  const allGroups = groupList?.tag_group.map((group) => ({id: group.id, name: group.name})) || []
+  const allGroups = groupList?.tech_db_tag_group.map((group) => ({id: group.id, name: group.name})) || []
 
   return (
     <Stack direction="row" alignItems="center" spacing={1}>

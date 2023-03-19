@@ -1,13 +1,13 @@
 import React from "react";
 
 export type entity2relative = {
-  pairId: number
+  pairId: string
   status: "selected" | "unselected" | "new"
-  relativeId: number
+  relativeId: string
 }
 
 export const toggleRelation = (
-  tagId: number,
+  tagId: string,
   selectedTags: entity2relative[],
   setStateFn: React.Dispatch<React.SetStateAction<entity2relative[]>>
 ) => {
@@ -19,8 +19,8 @@ export const toggleRelation = (
   }
 }
 
-export const addNewRelation = (relations: entity2relative[], relativeId: number): entity2relative[] =>
-  [...relations, {pairId: 0, status: "new", relativeId: relativeId}]
+export const addNewRelation = (relations: entity2relative[], relativeId: string): entity2relative[] =>
+  [...relations, {pairId: "", status: "new", relativeId: relativeId}]
 
 export const toggleRelationByIndex = (relations: entity2relative[], relationIndex: number): entity2relative[] => {
   let copy = [...relations]

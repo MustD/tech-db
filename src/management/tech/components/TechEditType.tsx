@@ -23,8 +23,8 @@ export const TechEditType = (
         label="Type"
         onChange={(event) => setTypeId(event.target.value as string)}
       >
-        {techTypes && techTypes.tech_type.map((techType) =>
-          <MenuItem key={techType.id} value={String(techType.id)}>{techType.name}</MenuItem>
+        {techTypes && techTypes.tech_db_tech_type.map((techType) =>
+          <MenuItem key={techType.id} value={techType.id}>{techType.name}</MenuItem>
         )}
       </Select>
     </FormControl>

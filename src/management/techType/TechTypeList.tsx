@@ -19,7 +19,7 @@ export const TechTypeList = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data && data.tech_type.map((item) =>
+          {data && data.tech_db_tech_type.map((item) =>
             <TableRow key={item.id}>
               <TableCell> {item.id} </TableCell>
               <TableCell>{item.name}</TableCell>

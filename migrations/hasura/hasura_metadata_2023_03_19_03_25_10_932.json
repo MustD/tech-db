@@ -1,0 +1,163 @@
+{
+  "resource_version": 37,
+  "metadata": {
+    "version": 3,
+    "sources": [
+      {
+        "name": "tech_db",
+        "kind": "postgres",
+        "tables": [
+          {
+            "table": {
+              "schema": "tech_db",
+              "name": "group2tag"
+            },
+            "object_relationships": [
+              {
+                "name": "tag_group",
+                "using": {
+                  "foreign_key_constraint_on": "tag_group_id"
+                }
+              },
+              {
+                "name": "tech_tag",
+                "using": {
+                  "foreign_key_constraint_on": "tech_tag_id"
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "schema": "tech_db",
+              "name": "tag_group"
+            },
+            "array_relationships": [
+              {
+                "name": "group2tags",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "tag_group_id",
+                    "table": {
+                      "schema": "tech_db",
+                      "name": "group2tag"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "schema": "tech_db",
+              "name": "tech"
+            },
+            "object_relationships": [
+              {
+                "name": "tech_type",
+                "using": {
+                  "foreign_key_constraint_on": "tech_type_id"
+                }
+              }
+            ],
+            "array_relationships": [
+              {
+                "name": "tech2tags",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "tech_id",
+                    "table": {
+                      "schema": "tech_db",
+                      "name": "tech2tag"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "schema": "tech_db",
+              "name": "tech2tag"
+            },
+            "object_relationships": [
+              {
+                "name": "tech",
+                "using": {
+                  "foreign_key_constraint_on": "tech_id"
+                }
+              },
+              {
+                "name": "tech_tag",
+                "using": {
+                  "foreign_key_constraint_on": "tag_id"
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "schema": "tech_db",
+              "name": "tech_tag"
+            },
+            "array_relationships": [
+              {
+                "name": "group2tags",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "tech_tag_id",
+                    "table": {
+                      "schema": "tech_db",
+                      "name": "group2tag"
+                    }
+                  }
+                }
+              },
+              {
+                "name": "tech2tags",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "tag_id",
+                    "table": {
+                      "schema": "tech_db",
+                      "name": "tech2tag"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "schema": "tech_db",
+              "name": "tech_type"
+            },
+            "array_relationships": [
+              {
+                "name": "teches",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "tech_type_id",
+                    "table": {
+                      "schema": "tech_db",
+                      "name": "tech"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "configuration": {
+          "connection_info": {
+            "use_prepared_statements": false,
+            "database_url": {
+              "from_env": "PG_DATABASE_URL"
+            },
+            "isolation_level": "read-committed"
+          }
+        }
+      }
+    ]
+  }
+}

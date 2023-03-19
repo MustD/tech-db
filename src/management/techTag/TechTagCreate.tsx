@@ -10,7 +10,7 @@ export const TechTagCreate = () => {
   const [name, setName] = useState("")
   const [selectedGroups, setSelectedGroups] = useState<entity2relative[]>([])
 
-  const toggleSelectedGroup = (groupId: number) => toggleRelation(groupId, selectedGroups, setSelectedGroups)
+  const toggleSelectedGroup = (groupId: string) => toggleRelation(groupId, selectedGroups, setSelectedGroups)
 
   const [saveTechTag, {error: errorSaved, data: data}] = useSaveTechTagMutation({
     variables: {techTag: {name: name}},
@@ -26,8 +26,8 @@ export const TechTagCreate = () => {
   })
 
   useEffect(() => {
-    if (data?.insert_tech_tag_one?.id) {
-      setId(data?.insert_tech_tag_one?.id)
+    if (data?.insert_tech_db_tech_tag_one?.id) {
+      setId(data?.insert_tech_db_tech_tag_one?.id)
     }
   }, [data])
   useEffect(() => {

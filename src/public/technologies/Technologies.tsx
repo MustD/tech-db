@@ -6,7 +6,9 @@ import {
   CardContent,
   Chip,
   FormControl,
-  InputLabel, LinearProgress, MenuItem,
+  InputLabel,
+  LinearProgress,
+  MenuItem,
   Select,
   Stack,
   Typography
@@ -24,7 +26,7 @@ export const Technologies = () => {
   })
 
   const {data: usedTagsData} = useGetAllUsedTagsQuery()
-  const usedTags = usedTagsData?.tech_tag || []
+  const usedTags = usedTagsData?.tech_db_tech_tag || []
 
   useEffect(() => {
     refetch({where: getFilter([tagFilter])})

@@ -1,5 +1,5 @@
 query getTechList {
-    tech(order_by: {id: asc}) {
+    tech_db_tech(order_by: {id: asc}) {
         id
         link
         name
@@ -16,14 +16,14 @@ query getTechList {
     }
 }
 
-mutation insertTech($tech: tech_insert_input!) {
-    insert_tech_one(object: $tech){
+mutation insertTech($tech: tech_db_tech_insert_input!) {
+    insert_tech_db_tech_one(object: $tech){
         id
     }
 }
 
-query getTechById($id: bigint!) {
-    tech_by_pk(id: $id) {
+query getTechById($id: uuid!) {
+    tech_db_tech_by_pk(id: $id) {
         id
         link
         name
@@ -37,26 +37,26 @@ query getTechById($id: bigint!) {
     }
 }
 
-mutation updateTechById($id: bigint = "", $_set: tech_set_input = {}) {
-    update_tech_by_pk(pk_columns: {id: $id}, _set: $_set) {
+mutation updateTechById($id: uuid!, $_set: tech_db_tech_set_input = {}) {
+    update_tech_db_tech_by_pk(pk_columns: {id: $id}, _set: $_set) {
         id
     }
 }
 
-mutation deleteTechById($id: bigint!) {
-    delete_tech_by_pk(id: $id) {
+mutation deleteTechById($id: uuid!) {
+    delete_tech_db_tech_by_pk(id: $id) {
         id
     }
 }
 
-mutation insertTech2Tag($objects: [tech2tag_insert_input!]!) {
-    insert_tech2tag(objects: $objects) {
+mutation insertTech2Tag($objects: [tech_db_tech2tag_insert_input!]!) {
+    insert_tech_db_tech2tag(objects: $objects) {
         affected_rows
     }
 }
 
-mutation deleteTech2TagByIds($_in: [bigint!]) {
-    delete_tech2tag(where: {id: {_in: $_in}}) {
+mutation deleteTech2TagByIds($_in: [uuid!]) {
+    delete_tech_db_tech2tag(where: {id: {_in: $_in}}) {
         affected_rows
     }
 }

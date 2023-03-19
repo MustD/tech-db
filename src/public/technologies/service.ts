@@ -1,10 +1,10 @@
 import {GetTechWithSubListQuery} from "../../generated/graphql/generated";
-import {List, Seq} from "immutable";
+import {List} from "immutable";
 
 export const extractTechInfo = (data: GetTechWithSubListQuery) => {
-  const incoming = List(data.tech)
+  const incoming = List(data.tech_db_tech)
   const flatData = incoming
-    .map(tech => tech.tech2tags.map(tag => tag.tech_tag.tag2groups.map(group => ({
+    .map(tech => tech.tech2tags.map(tag => tag.tech_tag.group2tags.map(group => ({
       techId: tech.id,
       techName: tech.name,
       techType: tech.tech_type.name,

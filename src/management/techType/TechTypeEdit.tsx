@@ -2,7 +2,6 @@ import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {Stack, TextField, Typography} from "@mui/material";
 import {
-  GetTechTypeByIdDocument,
   useDeleteTechTypeByIdMutation,
   useGetTechTypeByIdQuery,
   useUpdateTechTypeMutation
@@ -11,7 +10,7 @@ import {ApolloErrorMessage, EditButtonGroup} from "../components";
 
 export const TechTypeEdit = () => {
   const {techTypeId} = useParams<{ techTypeId: string }>()
-  const id = Number(techTypeId) || 0
+  const id = techTypeId || ""
   const [name, setName] = useState("")
 
   const {data: oldData} = useGetTechTypeByIdQuery({
@@ -19,10 +18,10 @@ export const TechTypeEdit = () => {
   })
 
   useEffect(() => {
-    if (oldData?.tech_type_by_pk) {
-      setName(oldData.tech_type_by_pk.name)
+    if (oldData?.tech_db_tech_type_by_pk) {
+      setName(oldData.tech_db_tech_type_by_pk.name)
     }
-  }, [oldData?.tech_type_by_pk])
+  }, [oldData?.tech_db_tech_type_by_pk])
 
   const [saveTechType, {error: errorSave, data: saveData}] = useUpdateTechTypeMutation({
     variables: {id: id, techTypeData: {name: name}},

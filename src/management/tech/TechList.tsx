@@ -34,7 +34,7 @@ export const TechList = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data && data.tech.map((tech) =>
+          {data && data.tech_db_tech.map((tech) =>
             <TableRow key={tech.id}>
               <TableCell> {tech.id} </TableCell>
               <TableCell>{tech.name}</TableCell>

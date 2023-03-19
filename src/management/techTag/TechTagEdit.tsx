@@ -2,7 +2,6 @@ import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {Stack, TextField, Typography} from "@mui/material";
 import {
-  GetTechTagByIdDocument,
   useDeleteGroup2TagByIdsMutation,
   useDeleteTechTagByIdMutation,
   useGetTechTagByIdQuery,
@@ -15,21 +14,21 @@ import {ApolloErrorMessage, EditButtonGroup} from "../components";
 
 export const TechTagEdit = () => {
   const {techTagId} = useParams<{ techTagId: string }>()
-  const id = Number(techTagId) || 0
+  const id = techTagId || ""
 
   const [name, setName] = useState("")
   const [selectedGroups, setSelectedGroups] = useState<entity2relative[]>([])
 
-  const toggleSelectedGroup = (groupId: number) => toggleRelation(groupId, selectedGroups, setSelectedGroups)
+  const toggleSelectedGroup = (groupId: string) => toggleRelation(groupId, selectedGroups, setSelectedGroups)
 
   const {data: oldData} = useGetTechTagByIdQuery({
     variables: {id: id}, fetchPolicy: "no-cache"
   })
 
   useEffect(() => {
-    if (oldData?.tech_tag_by_pk) {
-      setName(oldData.tech_tag_by_pk.name)
-      setSelectedGroups(oldData.tech_tag_by_pk.tag2groups.map(item => (
+    if (oldData?.tech_db_tech_tag_by_pk) {
+      setName(oldData.tech_db_tech_tag_by_pk.name)
+      setSelectedGroups(oldData.tech_db_tech_tag_by_pk.group2tags.map(item => (
         {
           pairId: item.id,
           status: "selected",
@@ -37,7 +36,7 @@ export const TechTagEdit = () => {
         }
       )))
     }
-  }, [oldData?.tech_tag_by_pk])
+  }, [oldData?.tech_db_tech_tag_by_pk])
 
   const [saveTechTag, {error: saveError, data: saveData}] = useUpdateTechTagByIdMutation({
     variables: {id: id, techTag: {name: name}},
@@ -69,7 +68,7 @@ export const TechTagEdit = () => {
     if (selectedGroups.findIndex(tag => tag.status === "unselected") >= 0) {
       deleteGroupRelations()
     }
-  }, [saveData?.update_tech_tag_by_pk])
+  }, [saveData?.update_tech_db_tech_tag_by_pk])
 
   return (
     <Stack direction={"column"} justifyContent={"flex-start"} alignItems={"flex-start"} spacing={1}>

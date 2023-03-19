@@ -2,7 +2,6 @@ import {Stack, TextField, Typography} from "@mui/material";
 import {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import {
-  GetTechByIdDocument,
   useDeleteTech2TagByIdsMutation,
   useDeleteTechByIdMutation,
   useGetTechByIdQuery,
@@ -15,7 +14,7 @@ import {ApolloErrorMessage, EditButtonGroup} from "../components";
 
 export const TechEdit = () => {
   const {techId} = useParams<{ techId: string }>()
-  const id = Number(techId) || 0
+  const id = techId || ""
 
   const [name, setName] = useState("")
   const [link, setLink] = useState("")
@@ -26,11 +25,11 @@ export const TechEdit = () => {
     {variables: {id: id}, fetchPolicy: "no-cache"}
   )
   useEffect(() => {
-    if (oldData?.tech_by_pk) {
-      setName(oldData.tech_by_pk.name)
-      setLink(oldData.tech_by_pk.link)
-      setTypeId(String(oldData.tech_by_pk.tech_type_id))
-      setSelectedTags(oldData.tech_by_pk.tech2tags.map((tech2tag) => ({
+    if (oldData?.tech_db_tech_by_pk) {
+      setName(oldData.tech_db_tech_by_pk.name)
+      setLink(oldData.tech_db_tech_by_pk.link)
+      setTypeId(oldData.tech_db_tech_by_pk.tech_type_id)
+      setSelectedTags(oldData.tech_db_tech_by_pk.tech2tags.map((tech2tag) => ({
         pairId: tech2tag.id,
         status: "selected",
         relativeId: tech2tag.tech_tag.id
@@ -38,12 +37,12 @@ export const TechEdit = () => {
     }
   }, [oldData])
 
-  const toggleSelectedTags = (tagId: number) => toggleRelation(tagId, selectedTags, setSelectedTags)
+  const toggleSelectedTags = (tagId: string) => toggleRelation(tagId, selectedTags, setSelectedTags)
 
   const [saveTech, {error: errorSaving, data: saveData}] = useUpdateTechByIdMutation({
     variables: {
       id: id,
-      _set: {name: name, link: link, tech_type_id: Number(typeId)}
+      _set: {name: name, link: link, tech_type_id: typeId}
     }
   })
 
@@ -71,7 +70,7 @@ export const TechEdit = () => {
     if (selectedTags.findIndex(tag => tag.status === "unselected") >= 0) {
       deleteTech2Tag()
     }
-  }, [saveData?.update_tech_by_pk])
+  }, [saveData?.update_tech_db_tech_by_pk])
 
   return (
     <Stack direction={"column"} justifyContent={"flex-start"} alignItems={"flex-start"} spacing={2}>

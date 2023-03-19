@@ -1,32 +1,32 @@
 query getTagGroupList {
-    tag_group(order_by: {id: asc}) {
+    tech_db_tag_group(order_by: {id: asc}) {
         id
         name
     }
 }
 
-query getTagGroupByID ($id: bigint!)  {
-    tag_group_by_pk(id: $id) {
+query getTagGroupByID ($id: uuid!)  {
+    tech_db_tag_group_by_pk(id: $id) {
         id
         name
     }
 }
 
-mutation insertTagGroup ($tagGroup: tag_group_insert_input!) {
-    insert_tag_group_one(object: $tagGroup) {
+mutation insertTagGroup ($tagGroup: tech_db_tag_group_insert_input!) {
+    insert_tech_db_tag_group_one(object: $tagGroup) {
         id
         name
     }
 }
 
-mutation updateTagGroupById ($id: bigint!, $tagGroup: tag_group_set_input!) {
-    update_tag_group_by_pk(pk_columns: {id: $id}, _set: $tagGroup ) {
+mutation updateTagGroupById ($id: uuid!, $tagGroup: tech_db_tag_group_set_input!) {
+    update_tech_db_tag_group_by_pk(pk_columns: {id: $id}, _set: $tagGroup ) {
         id
     }
 }
 
-mutation deleteTagGroupById ($id: bigint!) {
-    delete_tag_group_by_pk(id: $id) {
+mutation deleteTagGroupById ($id: uuid!) {
+    delete_tech_db_tag_group_by_pk(id: $id) {
         id
     }
 }

@@ -19,7 +19,7 @@ export const TagGroupList = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data && data.tag_group.map((item) =>
+          {data && data.tech_db_tag_group.map((item) =>
             <TableRow key={item.id}>
               <TableCell> {item.id} </TableCell>
               <TableCell>{item.name}</TableCell>
